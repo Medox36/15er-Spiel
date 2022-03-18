@@ -88,10 +88,8 @@ public class GUI implements ActionListener{
                     iOut = checkEmpty(i);
                     if (iOut == 17) {
                         textLabel.setText(" Error");
-                        break;
                     } else if (iOut == 16) {
                         textLabel.setText(" Exception");
-                        break;
                     } else if (iOut < -1 || iOut > 17) {
                         textLabel.setText(" Nope!");
                         try {
@@ -108,7 +106,6 @@ public class GUI implements ActionListener{
                         Icon tempIconOut = fieldButtons[iOut].getIcon();
                         fieldButtons[iOut].setIcon(tempIconIn);
                         fieldButtons[i].setIcon(tempIconOut);
-                        break;
                     }
                 }
             }
