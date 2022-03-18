@@ -8,8 +8,8 @@ public class GUI implements ActionListener{
 
     private int[] pos;
     private final String[] check;
-    private final JButton[] jButtons;
-    private final JButton button;
+    private final JButton[] fieldButtons;
+    private final JButton shuffleButton;
     private final JLabel textLabel;
     private final Icon[] icons;
 
@@ -19,8 +19,8 @@ public class GUI implements ActionListener{
         JFrame frame = new JFrame();
         JPanel titlePanel = new JPanel();
         JPanel buttonPanel = new JPanel();
-        jButtons = new JButton[16];
-        button = new JButton();
+        fieldButtons = new JButton[16];
+        shuffleButton = new JButton();
         textLabel = new JLabel();
         icons = new Icon[16];
         for (int i = 0; i < 16; i++) {
@@ -47,24 +47,24 @@ public class GUI implements ActionListener{
         buttonPanel.setLayout(new GridLayout(4, 4));
         buttonPanel.setBackground(new Color(150, 150, 150));
 
-        button.setText("shuffle");
-        button.setFont(new Font("Ink Free",Font.BOLD, 23));
-        button.setBounds(350, 25, 120,45);
-        button.setBackground(new Color( 123, 125, 125 ));
-        button.setFocusable(false);
-        button.addActionListener(this);
+        shuffleButton.setText("shuffle");
+        shuffleButton.setFont(new Font("Ink Free",Font.BOLD, 23));
+        shuffleButton.setBounds(350, 25, 120,45);
+        shuffleButton.setBackground(new Color( 123, 125, 125 ));
+        shuffleButton.setFocusable(false);
+        shuffleButton.addActionListener(this);
 
         for (int i = 0; i < 16; i++) {
-            jButtons[i] = new JButton();
-            buttonPanel.add(jButtons[i]);
-            jButtons[i].setFont(new Font("Ink Free", Font.BOLD, 50));
-            jButtons[i].setBackground(new Color(248, 249, 249));
-            jButtons[i].setIcon(icons[i]);
-            jButtons[i].setFocusable(false);
-            jButtons[i].addActionListener(this);
+            fieldButtons[i] = new JButton();
+            buttonPanel.add(fieldButtons[i]);
+            fieldButtons[i].setFont(new Font("Ink Free", Font.BOLD, 50));
+            fieldButtons[i].setBackground(new Color(248, 249, 249));
+            fieldButtons[i].setIcon(icons[i]);
+            fieldButtons[i].setFocusable(false);
+            fieldButtons[i].addActionListener(this);
         }
 
-        textLabel.add(button);
+        textLabel.add(shuffleButton);
         titlePanel.add(textLabel);
         frame.add(titlePanel, BorderLayout.NORTH);
         frame.add(buttonPanel);
@@ -79,12 +79,12 @@ public class GUI implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == button) {
+        if (e.getSource() == shuffleButton) {
             shuffle();
         } else {
             int iOut;
             for (int i = 0; i < 16; i++) {
-                if (e.getSource() == jButtons[i]) {
+                if (e.getSource() == fieldButtons[i]) {
                     iOut = checkEmpty(i);
                     if (iOut == 17) {
                         textLabel.setText(" Error");
@@ -104,10 +104,10 @@ public class GUI implements ActionListener{
                         textLabel.setText(" 15er");
                         pos[iOut] = i + 1;
                         pos[i] = iOut + 1;
-                        Icon tempIconIn = jButtons[i].getIcon();
-                        Icon tempIconOut = jButtons[iOut].getIcon();
-                        jButtons[iOut].setIcon(tempIconIn);
-                        jButtons[i].setIcon(tempIconOut);
+                        Icon tempIconIn = fieldButtons[i].getIcon();
+                        Icon tempIconOut = fieldButtons[iOut].getIcon();
+                        fieldButtons[iOut].setIcon(tempIconIn);
+                        fieldButtons[i].setIcon(tempIconOut);
                         break;
                     }
                 }
@@ -123,7 +123,7 @@ public class GUI implements ActionListener{
     private void check() {
         int w = 0;
         for (int i = 0; i < 15; i++) {
-            File file = new File(String.valueOf(jButtons[i].getIcon()));
+            File file = new File(String.valueOf(fieldButtons[i].getIcon()));
             if (file.getName().equals(check[i])) {
                 w++;
             }
@@ -136,161 +136,161 @@ public class GUI implements ActionListener{
     private int checkEmpty(int i) {
         int iOut;
         if (i == 0) {
-            if (jButtons[1].getIcon() == icons[15]) {
+            if (fieldButtons[1].getIcon() == icons[15]) {
                 iOut = 1;
-            } else if (jButtons[4].getIcon() == icons[15]) {
+            } else if (fieldButtons[4].getIcon() == icons[15]) {
                 iOut = 4;
             } else {
                 iOut = 16;
             }
         } else if (i == 1) {
-            if (jButtons[0].getIcon() == icons[15]) {
+            if (fieldButtons[0].getIcon() == icons[15]) {
                 iOut = 0;
-            } else if (jButtons[2].getIcon() == icons[15]) {
+            } else if (fieldButtons[2].getIcon() == icons[15]) {
                 iOut = 2;
-            } else if (jButtons[5].getIcon() == icons[15]) {
+            } else if (fieldButtons[5].getIcon() == icons[15]) {
                 iOut = 5;
             } else {
                 iOut = 16;
             }
         } else if (i == 2) {
-            if (jButtons[1].getIcon() == icons[15]) {
+            if (fieldButtons[1].getIcon() == icons[15]) {
                 iOut = 1;
-            } else if (jButtons[3].getIcon() == icons[15]) {
+            } else if (fieldButtons[3].getIcon() == icons[15]) {
                 iOut = 3;
-            } else if (jButtons[6].getIcon() == icons[15]) {
+            } else if (fieldButtons[6].getIcon() == icons[15]) {
                 iOut = 6;
             } else {
                 iOut = 16;
             }
         } else if (i == 3) {
-            if (jButtons[2].getIcon() == icons[15]) {
+            if (fieldButtons[2].getIcon() == icons[15]) {
                 iOut = 2;
-            } else if (jButtons[7].getIcon() == icons[15]) {
+            } else if (fieldButtons[7].getIcon() == icons[15]) {
                 iOut = 7;
             } else {
                 iOut = 16;
             }
         } else if (i == 4) {
-            if (jButtons[0].getIcon() == icons[15]) {
+            if (fieldButtons[0].getIcon() == icons[15]) {
                 iOut = 0;
-            } else if (jButtons[5].getIcon() == icons[15]) {
+            } else if (fieldButtons[5].getIcon() == icons[15]) {
                 iOut = 5;
-            } else if (jButtons[8].getIcon() == icons[15]) {
+            } else if (fieldButtons[8].getIcon() == icons[15]) {
                 iOut = 8;
             } else {
                 iOut = 16;
             }
         } else if (i == 5) {
-            if (jButtons[1].getIcon() == icons[15]) {
+            if (fieldButtons[1].getIcon() == icons[15]) {
                 iOut = 1;
-            } else if (jButtons[4].getIcon() == icons[15]) {
+            } else if (fieldButtons[4].getIcon() == icons[15]) {
                 iOut = 4;
-            } else if (jButtons[6].getIcon() == icons[15]) {
+            } else if (fieldButtons[6].getIcon() == icons[15]) {
                 iOut = 6;
-            } else if (jButtons[9].getIcon() == icons[15]) {
+            } else if (fieldButtons[9].getIcon() == icons[15]) {
                 iOut = 9;
             } else {
                 iOut = 16;
             }
         } else if (i == 6) {
-            if (jButtons[2].getIcon() == icons[15]) {
+            if (fieldButtons[2].getIcon() == icons[15]) {
                 iOut = 2;
-            } else if (jButtons[5].getIcon() == icons[15]) {
+            } else if (fieldButtons[5].getIcon() == icons[15]) {
                 iOut = 5;
-            } else if (jButtons[7].getIcon() == icons[15]) {
+            } else if (fieldButtons[7].getIcon() == icons[15]) {
                 iOut = 7;
-            } else if (jButtons[10].getIcon() == icons[15]) {
+            } else if (fieldButtons[10].getIcon() == icons[15]) {
                 iOut = 10;
             } else {
                 iOut = 16;
             }
         } else if (i == 7) {
-            if (jButtons[3].getIcon() == icons[15]) {
+            if (fieldButtons[3].getIcon() == icons[15]) {
                 iOut = 3;
-            } else if (jButtons[6].getIcon() == icons[15]) {
+            } else if (fieldButtons[6].getIcon() == icons[15]) {
                 iOut = 6;
-            } else if (jButtons[11].getIcon() == icons[15]) {
+            } else if (fieldButtons[11].getIcon() == icons[15]) {
                 iOut = 11;
             } else {
                 iOut = 16;
             }
         } else if (i == 8) {
-            if (jButtons[4].getIcon() == icons[15]) {
+            if (fieldButtons[4].getIcon() == icons[15]) {
                 iOut = 4;
-            } else if (jButtons[9].getIcon() == icons[15]) {
+            } else if (fieldButtons[9].getIcon() == icons[15]) {
                 iOut = 9;
-            } else if (jButtons[12].getIcon() == icons[15]) {
+            } else if (fieldButtons[12].getIcon() == icons[15]) {
                 iOut = 12;
             } else {
                 iOut = 16;
             }
         } else if (i == 9) {
-            if (jButtons[5].getIcon() == icons[15]) {
+            if (fieldButtons[5].getIcon() == icons[15]) {
                 iOut = 5;
-            } else if (jButtons[8].getIcon() == icons[15]) {
+            } else if (fieldButtons[8].getIcon() == icons[15]) {
                 iOut = 8;
-            } else if (jButtons[10].getIcon() == icons[15]) {
-                    iOut = 10;
-            } else if (jButtons[13].getIcon() == icons[15]) {
+            } else if (fieldButtons[10].getIcon() == icons[15]) {
+                iOut = 10;
+            } else if (fieldButtons[13].getIcon() == icons[15]) {
                 iOut = 13;
             } else {
                 iOut = 16;
             }
         } else if (i == 10) {
-            if (jButtons[6].getIcon() == icons[15]) {
+            if (fieldButtons[6].getIcon() == icons[15]) {
                 iOut = 6;
-            } else if (jButtons[9].getIcon() == icons[15]) {
+            } else if (fieldButtons[9].getIcon() == icons[15]) {
                 iOut = 9;
-            } else if (jButtons[11].getIcon() == icons[15]) {
+            } else if (fieldButtons[11].getIcon() == icons[15]) {
                 iOut = 11;
-            } else if (jButtons[14].getIcon() == icons[15]) {
+            } else if (fieldButtons[14].getIcon() == icons[15]) {
                 iOut = 14;
             } else {
                 iOut = 16;
             }
         } else if (i == 11) {
-            if (jButtons[7].getIcon() == icons[15]) {
+            if (fieldButtons[7].getIcon() == icons[15]) {
                 iOut = 7;
-            } else if (jButtons[10].getIcon() == icons[15]) {
+            } else if (fieldButtons[10].getIcon() == icons[15]) {
                 iOut = 10;
-            } else if (jButtons[15].getIcon() == icons[15]) {
+            } else if (fieldButtons[15].getIcon() == icons[15]) {
                 iOut = 15;
             } else {
                 iOut = 16;
             }
         } else if (i == 12) {
-            if (jButtons[8].getIcon() == icons[15]) {
+            if (fieldButtons[8].getIcon() == icons[15]) {
                 iOut = 8;
-            } else if (jButtons[13].getIcon() == icons[15]) {
+            } else if (fieldButtons[13].getIcon() == icons[15]) {
                 iOut = 13;
             } else {
                 iOut = 16;
             }
         } else if (i == 13) {
-            if (jButtons[9].getIcon() == icons[15]) {
+            if (fieldButtons[9].getIcon() == icons[15]) {
                 iOut = 9;
-            } else if (jButtons[12].getIcon() == icons[15]) {
+            } else if (fieldButtons[12].getIcon() == icons[15]) {
                 iOut = 12;
-            } else if (jButtons[14].getIcon() == icons[15]) {
+            } else if (fieldButtons[14].getIcon() == icons[15]) {
                 iOut = 14;
             } else {
                 iOut = 16;
             }
         } else if (i == 14) {
-            if (jButtons[10].getIcon() == icons[15]) {
+            if (fieldButtons[10].getIcon() == icons[15]) {
                 iOut = 10;
-            } else if (jButtons[13].getIcon() == icons[15]) {
+            } else if (fieldButtons[13].getIcon() == icons[15]) {
                 iOut = 13;
-            } else if (jButtons[15].getIcon() == icons[15]) {
+            } else if (fieldButtons[15].getIcon() == icons[15]) {
                 iOut = 15;
             } else {
                 iOut = 16;
             }
         } else if (i == 15) {
-            if (jButtons[11].getIcon() == icons[15]) {
+            if (fieldButtons[11].getIcon() == icons[15]) {
                 iOut = 11;
-            } else if (jButtons[14].getIcon() == icons[15]) {
+            } else if (fieldButtons[14].getIcon() == icons[15]) {
                 iOut = 14;
             } else {
                 iOut = 16;
@@ -303,8 +303,8 @@ public class GUI implements ActionListener{
 
     private void complete() {
         for (int i = 0; i < 16; i++) {
-            jButtons[i].setBackground(new Color(89, 215, 69, 255));
-            jButtons[i].setEnabled(false);
+            fieldButtons[i].setBackground(new Color(89, 215, 69, 255));
+            fieldButtons[i].setEnabled(false);
         }
         textLabel.setText(" Done!");
     }
@@ -315,20 +315,20 @@ public class GUI implements ActionListener{
             change(((int) (Math.random() * 16)), ((int) (Math.random() * 16)));
         }
         for (int i = 0; i < 16; i++) {
-            jButtons[i].setEnabled(true);
-            jButtons[i].setBackground(new Color(248, 249, 249));
+            fieldButtons[i].setEnabled(true);
+            fieldButtons[i].setBackground(new Color(248, 249, 249));
         }
         textLabel.setText(" 15er");
 
         for (int i = 0; i < 16; i++) {
-            jButtons[i].setIcon(icons[(pos[i] - 1)]);
+            fieldButtons[i].setIcon(icons[(pos[i] - 1)]);
         }
     }
 
     private void reset() {
         pos = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
         for (int i = 0; i < 16; i++) {
-            jButtons[i].setIcon(icons[i]);
+            fieldButtons[i].setIcon(icons[i]);
         }
     }
 
