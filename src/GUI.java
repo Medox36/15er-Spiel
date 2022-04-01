@@ -4,36 +4,35 @@ import java.awt.event.*;
 import java.io.File;
 import java.util.Objects;
 
-public class GUI implements ActionListener{
+public class GUI extends JFrame {
 
     private int[] pos;
     private final String[] check;
     private final JButton[] fieldButtons;
-    private final JButton shuffleButton;
     private final JLabel textLabel;
     private final Icon[] icons;
 
     public GUI() {
+        super("15er - Spiel");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(500, 600);
+        setIconImage(new ImageIcon(Objects.requireNonNull(GUI.class.getResource("images/logo.png"))).getImage());
+        setBackground(new Color(50, 50, 50));
+        setLayout(new BorderLayout());
+        setLocationRelativeTo(null);
+        setResizable(false);
+
         check = new String[] {"1.png","2.png","3.png","4.png","5.png","6.png","7.png","8.png","9.png","10.png","11.png","12.png","13.png","14.png","15.png","16.png"};
         pos = new int[] {1, 2, 3, 4, 5, 6, 7 ,8 ,9, 10, 11, 12, 13, 14, 15, 16};
-        JFrame frame = new JFrame();
         JPanel titlePanel = new JPanel();
         JPanel buttonPanel = new JPanel();
         fieldButtons = new JButton[16];
-        shuffleButton = new JButton();
+        JButton shuffleButton = new JButton();
         textLabel = new JLabel();
         icons = new Icon[16];
         for (int i = 0; i < 16; i++) {
             icons[i] = new ImageIcon(Objects.requireNonNull(GUI.class.getResource("images/" + (i + 1) + ".png")));
         }
-
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500, 600);
-        frame.getContentPane().setBackground(new Color(50, 50, 50));
-        frame.setLayout(new BorderLayout());
-        frame.setLocationRelativeTo(null);
-        frame.setResizable(false);
-        frame.setTitle("15er - Spiel");
 
         textLabel.setBackground(new Color(50, 50, 50));
         textLabel.setForeground(new Color(78, 216, 172));
@@ -52,7 +51,9 @@ public class GUI implements ActionListener{
         shuffleButton.setBounds(350, 25, 120,45);
         shuffleButton.setBackground(new Color( 123, 125, 125 ));
         shuffleButton.setFocusable(false);
-        shuffleButton.addActionListener(this);
+        shuffleButton.addActionListener(e -> shuffle());
+
+        GameListener gameListener = new GameListener();
 
         for (int i = 0; i < 16; i++) {
             fieldButtons[i] = new JButton();
@@ -61,56 +62,20 @@ public class GUI implements ActionListener{
             fieldButtons[i].setBackground(new Color(248, 249, 249));
             fieldButtons[i].setIcon(icons[i]);
             fieldButtons[i].setFocusable(false);
-            fieldButtons[i].addActionListener(this);
+            fieldButtons[i].addActionListener(gameListener);
         }
 
         textLabel.add(shuffleButton);
         titlePanel.add(textLabel);
-        frame.add(titlePanel, BorderLayout.NORTH);
-        frame.add(buttonPanel);
-        frame.setVisible(true);
+        add(titlePanel, BorderLayout.NORTH);
+        add(buttonPanel);
+        setVisible(true);
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         firstMove();
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == shuffleButton) {
-            shuffle();
-        } else {
-            int iOut;
-            for (int i = 0; i < 16; i++) {
-                if (e.getSource() == fieldButtons[i]) {
-                    iOut = checkEmpty(i);
-                    if (iOut == 17) {
-                        textLabel.setText(" Error");
-                    } else if (iOut == 16) {
-                        textLabel.setText(" Exception");
-                    } else if (iOut < -1 || iOut > 17) {
-                        textLabel.setText(" Nope!");
-                        try {
-                            Thread.sleep(3000);
-                        } catch (InterruptedException interruptedException) {
-                            interruptedException.printStackTrace();
-                        }
-                        System.exit(-1);
-                    } else {
-                        textLabel.setText(" 15er");
-                        pos[iOut] = i + 1;
-                        pos[i] = iOut + 1;
-                        Icon tempIconIn = fieldButtons[i].getIcon();
-                        Icon tempIconOut = fieldButtons[iOut].getIcon();
-                        fieldButtons[iOut].setIcon(tempIconIn);
-                        fieldButtons[i].setIcon(tempIconOut);
-                    }
-                }
-            }
-            check();
-        }
     }
 
     private void firstMove() {
@@ -339,5 +304,40 @@ public class GUI implements ActionListener{
         int storage = pos[a];
         pos[a] = pos[b];
         pos[b] = storage;
+    }
+
+    private class GameListener implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int iOut;
+            for (int i = 0; i < 16; i++) {
+                if (e.getSource() == fieldButtons[i]) {
+                    iOut = checkEmpty(i);
+                    if (iOut == 17) {
+                        textLabel.setText(" Error");
+                    } else if (iOut == 16) {
+                        textLabel.setText(" Exception");
+                    } else if (iOut < -1 || iOut > 17) {
+                        textLabel.setText(" Nope!");
+                        try {
+                            Thread.sleep(3000);
+                        } catch (InterruptedException interruptedException) {
+                            interruptedException.printStackTrace();
+                        }
+                        System.exit(-1);
+                    } else {
+                        textLabel.setText(" 15er");
+                        pos[iOut] = i + 1;
+                        pos[i] = iOut + 1;
+                        Icon tempIconIn = fieldButtons[i].getIcon();
+                        Icon tempIconOut = fieldButtons[iOut].getIcon();
+                        fieldButtons[iOut].setIcon(tempIconIn);
+                        fieldButtons[i].setIcon(tempIconOut);
+                    }
+                }
+            }
+            check();
+        }
     }
 }
